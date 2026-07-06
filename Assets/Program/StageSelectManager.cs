@@ -12,9 +12,13 @@ public class StageSelectManager : MonoBehaviour
     [SerializeField] private Collider2D areaStage2;       // ステージ2の選択エリア（コライダー）
 
     [Header("ステージ3の設定")]
-    [SerializeField] private GameObject stage3Prefab;    // ステージ1のプレハブ
+    [SerializeField] private GameObject stage3Prefab;    // ステージ3のプレハブ
     [SerializeField] private Collider2D areaStage3; 
 
+        [Header("ステージ4の設定")]
+    [SerializeField] private GameObject stage4Prefab;    // ステージ4のプレハブ
+    [SerializeField] private Collider2D areaStage4; 
+    
     [Header("ステージを生成する中心位置")]
     [SerializeField] private Transform stageSpawnPoint;
 
@@ -55,9 +59,13 @@ public class StageSelectManager : MonoBehaviour
         {
             StartStage(stage2Prefab);
         }
-        else if (areaStage3.OverlapPoint(noteWorldPosition))
+        if (areaStage3.OverlapPoint(noteWorldPosition))
         {
             StartStage(stage3Prefab);
+        }
+        else if (areaStage4.OverlapPoint(noteWorldPosition))
+        {
+            StartStage(stage4Prefab);
         }
     }
 
@@ -70,6 +78,7 @@ public class StageSelectManager : MonoBehaviour
         areaStage1.gameObject.SetActive(false);
         areaStage2.gameObject.SetActive(false);
         areaStage3.gameObject.SetActive(false);
+        areaStage4.gameObject.SetActive(false);
 
         // 指定された位置（未設定ならゼロ座標）にステージのプレハブを生成
         Vector3 spawnPos = stageSpawnPoint != null ? stageSpawnPoint.position : Vector3.zero;
@@ -101,5 +110,6 @@ public class StageSelectManager : MonoBehaviour
         areaStage1.gameObject.SetActive(true);
         areaStage2.gameObject.SetActive(true);
         areaStage3.gameObject.SetActive(true);
+        areaStage4.gameObject.SetActive(true);
     }
 }
