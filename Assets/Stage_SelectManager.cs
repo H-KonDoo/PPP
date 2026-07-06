@@ -11,6 +11,10 @@ public class StageSelectManager : MonoBehaviour
     [SerializeField] private GameObject stage2Prefab;    // ステージ2のプレハブ
     [SerializeField] private Collider2D areaStage2;       // ステージ2の選択エリア（コライダー）
 
+    [Header("ステージ3の設定")]
+    [SerializeField] private GameObject stage3Prefab;    // ステージ1のプレハブ
+    [SerializeField] private Collider2D areaStage3; 
+
     [Header("ステージを生成する中心位置")]
     [SerializeField] private Transform stageSpawnPoint;
 
@@ -47,9 +51,13 @@ public class StageSelectManager : MonoBehaviour
             StartStage(stage1Prefab);
         }
         // 付箋（またはクリック）の座標がステージ2のエリア内に入っているか判定
-        else if (areaStage2.OverlapPoint(noteWorldPosition))
+        if (areaStage2.OverlapPoint(noteWorldPosition))
         {
             StartStage(stage2Prefab);
+        }
+        else if (areaStage3.OverlapPoint(noteWorldPosition))
+        {
+            StartStage(stage3Prefab);
         }
     }
 
@@ -61,6 +69,7 @@ public class StageSelectManager : MonoBehaviour
         // ステージ選択ボタン（赤い四角・青い四角）を画面から非表示にする
         areaStage1.gameObject.SetActive(false);
         areaStage2.gameObject.SetActive(false);
+        areaStage3.gameObject.SetActive(false);
 
         // 指定された位置（未設定ならゼロ座標）にステージのプレハブを生成
         Vector3 spawnPos = stageSpawnPoint != null ? stageSpawnPoint.position : Vector3.zero;
@@ -91,5 +100,6 @@ public class StageSelectManager : MonoBehaviour
         // ステージ選択ボタン（赤い四角・青い四角）を再表示する
         areaStage1.gameObject.SetActive(true);
         areaStage2.gameObject.SetActive(true);
+        areaStage3.gameObject.SetActive(true);
     }
 }
