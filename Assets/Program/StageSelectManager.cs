@@ -13,11 +13,19 @@ public class StageSelectManager : MonoBehaviour
 
     [Header("ステージ3の設定")]
     [SerializeField] private GameObject stage3Prefab;    // ステージ3のプレハブ
-    [SerializeField] private Collider2D areaStage3; 
+    [SerializeField] private Collider2D areaStage3;       // ステージ3の選択エリア（コライダー）
 
-        [Header("ステージ4の設定")]
+    [Header("ステージ4の設定")]
     [SerializeField] private GameObject stage4Prefab;    // ステージ4のプレハブ
-    [SerializeField] private Collider2D areaStage4; 
+    [SerializeField] private Collider2D areaStage4;       // ステージ4の選択エリア（コライダー）
+
+    [Header("ステージ5の設定")]
+    [SerializeField] private GameObject stage5Prefab;    // ステージ5のプレハブ
+    [SerializeField] private Collider2D areaStage5;       // ステージ5の選択エリア（コライダー）
+
+    [Header("ステージ6の設定")]
+    [SerializeField] private GameObject stage6Prefab;    // ステージ6のプレハブ
+    [SerializeField] private Collider2D areaStage6;       // ステージ6の選択エリア（コライダー）
     
     [Header("ステージを生成する中心位置")]
     [SerializeField] private Transform stageSpawnPoint;
@@ -49,45 +57,67 @@ public class StageSelectManager : MonoBehaviour
         // すでにステージが生成されてゲームが始まっている場合は、重なって生成されないように無視する
         if (currentActiveStage != null) return;
 
-        // 付箋（またはクリック）の座標がステージ1のエリア内に入っているか判定
-        if (areaStage1.OverlapPoint(noteWorldPosition))
+        // 各ステージのエリア内に入っているか順番に判定
+        if (areaStage1 != null && areaStage1.OverlapPoint(noteWorldPosition))
         {
             StartStage(stage1Prefab);
         }
-        // 付箋（またはクリック）の座標がステージ2のエリア内に入っているか判定
-        if (areaStage2.OverlapPoint(noteWorldPosition))
+        else if (areaStage2 != null && areaStage2.OverlapPoint(noteWorldPosition))
         {
             StartStage(stage2Prefab);
         }
-        if (areaStage3.OverlapPoint(noteWorldPosition))
+        else if (areaStage3 != null && areaStage3.OverlapPoint(noteWorldPosition))
         {
             StartStage(stage3Prefab);
         }
-        else if (areaStage4.OverlapPoint(noteWorldPosition))
+        else if (areaStage4 != null && areaStage4.OverlapPoint(noteWorldPosition))
         {
             StartStage(stage4Prefab);
+        }
+        else if (areaStage5 != null && areaStage5.OverlapPoint(noteWorldPosition))
+        {
+            StartStage(stage5Prefab);
+        }
+        else if (areaStage6 != null && areaStage6.OverlapPoint(noteWorldPosition))
+        {
+            StartStage(stage6Prefab);
         }
     }
 
     // 💡 実際にステージを生成してゲームを開始する関数
     private void StartStage(GameObject selectedStagePrefab)
     {
+        if (selectedStagePrefab == null) return;
+
         Debug.Log($"ステージ 【{selectedStagePrefab.name}】 を開始します！");
 
-        // ステージ選択ボタン（赤い四角・青い四角）を画面から非表示にする
-        areaStage1.gameObject.SetActive(false);
-        areaStage2.gameObject.SetActive(false);
-        areaStage3.gameObject.SetActive(false);
-        areaStage4.gameObject.SetActive(false);
+        // ステージ選択ボタン（全6つ）を画面から非表示にする
+        SetAllAreasActive(false);
 
         // 指定された位置（未設定ならゼロ座標）にステージのプレハブを生成
         Vector3 spawnPos = stageSpawnPoint != null ? stageSpawnPoint.position : Vector3.zero;
         currentActiveStage = Instantiate(selectedStagePrefab, spawnPos, Quaternion.identity);
 
-        // 💡 ステージが生成されたあとに、ボールスピーナー（PPPBallSpawner）をONにしてボールを落とす
+        // 💡 ステージが生成されたあとに、ボール生成器（PPPBallSpawner）をONにして位置を合わせる
         if (ballSpawner != null)
         {
             ballSpawner.SetActive(true);
+
+            // 💡 【発射位置自動設定の処理】生成されたステージの中から "SpawnPoint" というオブジェクトを探す
+            Transform customSpawnPoint = currentActiveStage.transform.Find("SpawnPoint");
+            
+            if (customSpawnPoint != null)
+            {
+                // SpawnPointが見つかったら、そこへスポーナーの座標を同期移動させる
+                ballSpawner.transform.position = customSpawnPoint.position;
+                Debug.Log($"{selectedStagePrefab.name} の SpawnPoint 位置へ発射口を移動しました。");
+            }
+            else
+            {
+                // ⚠️ 万が一、SpawnPointを作り忘れたステージがあった時のための保険用デフォルト位置（例: X:0, Y:3）
+                ballSpawner.transform.position = new Vector3(0f, 3f, 0f);
+                Debug.LogWarning($"{selectedStagePrefab.name} に SpawnPoint が見つかりません！デフォルト位置に配置しました。");
+            }
         }
     }
 
@@ -100,16 +130,24 @@ public class StageSelectManager : MonoBehaviour
             Destroy(currentActiveStage);
         }
 
-        // ボールスピーナーを再びOFFにする
+        // ボール生成器を再びOFFにする
         if (ballSpawner != null)
         {
             ballSpawner.SetActive(false);
         }
 
-        // ステージ選択ボタン（赤い四角・青い四角）を再表示する
-        areaStage1.gameObject.SetActive(true);
-        areaStage2.gameObject.SetActive(true);
-        areaStage3.gameObject.SetActive(true);
-        areaStage4.gameObject.SetActive(true);
+        // ステージ選択ボタン（全6つ）を再表示する
+        SetAllAreasActive(true);
+    }
+
+    // 💡 全ての選択エリアの表示/非表示を一括で切り替えるヘルパー関数
+    private void SetAllAreasActive(bool isActive)
+    {
+        if (areaStage1 != null) areaStage1.gameObject.SetActive(isActive);
+        if (areaStage2 != null) areaStage2.gameObject.SetActive(isActive);
+        if (areaStage3 != null) areaStage3.gameObject.SetActive(isActive);
+        if (areaStage4 != null) areaStage4.gameObject.SetActive(isActive);
+        if (areaStage5 != null) areaStage5.gameObject.SetActive(isActive);
+        if (areaStage6 != null) areaStage6.gameObject.SetActive(isActive);
     }
 }
