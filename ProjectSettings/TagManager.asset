@@ -52,5 +52,8 @@ TagManager:
   - name: Effect
     uniqueID: 968228791
     locked: 0
+  - name: Portal
+    uniqueID: 1302604755
+    locked: 0
   m_RenderingLayers:
   - Default

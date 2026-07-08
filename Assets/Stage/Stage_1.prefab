@@ -446,6 +446,7 @@ GameObject:
   - component: {fileID: 983652854499813543}
   - component: {fileID: 8538263565760845731}
   - component: {fileID: 852205130789925440}
+  - component: {fileID: 4070562065363333420}
   m_Layer: 0
   m_Name: GoalFrag
   m_TagString: Untagged
@@ -587,3 +588,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GoalEffect
   goalParticleObj: {fileID: 6498308879132043574, guid: 2a90508fc1e8de542bd7c7a4e4559792, type: 3}
   goalObj: {fileID: 8528813331068831185}
+--- !u!114 &4070562065363333420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8528813331068831185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de890e09b5da53849975b7e7cedbac40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GoalDetector
+  requiredTouchCount: 3
+  returnDelay: 3

@@ -27,6 +27,10 @@ public class StageSelectManager : MonoBehaviour
     [SerializeField] private GameObject stage6Prefab;    // ステージ6のプレハブ
     [SerializeField] private Collider2D areaStage6;       // ステージ6の選択エリア（コライダー）
     
+    [Header("スタッフクレジットの設定")]
+    [SerializeField] private GameObject creditsPrefab;    // スタッフクレジットを呼び出す部分
+    [SerializeField] private Collider2D areaCredits;
+    
     [Header("ステージを生成する中心位置")]
     [SerializeField] private Transform stageSpawnPoint;
 
@@ -81,6 +85,10 @@ public class StageSelectManager : MonoBehaviour
         else if (areaStage6 != null && areaStage6.OverlapPoint(noteWorldPosition))
         {
             StartStage(stage6Prefab);
+        }
+        else if (areaCredits != null && areaStage6.OverlapPoint(noteWorldPosition))
+        {
+            StartStage(creditsPrefab);
         }
     }
 
@@ -149,5 +157,6 @@ public class StageSelectManager : MonoBehaviour
         if (areaStage4 != null) areaStage4.gameObject.SetActive(isActive);
         if (areaStage5 != null) areaStage5.gameObject.SetActive(isActive);
         if (areaStage6 != null) areaStage6.gameObject.SetActive(isActive);
+        if (areaCredits != null) areaCredits.gameObject.SetActive(isActive);
     }
 }
