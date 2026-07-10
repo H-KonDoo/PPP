@@ -359,7 +359,7 @@ Transform:
   m_GameObject: {fileID: 2987137584298546020}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.044206075, w: 0.9990224}
-  m_LocalPosition: {x: 3.35, y: 0.19, z: 0}
+  m_LocalPosition: {x: 3.35, y: -0.23, z: 0}
   m_LocalScale: {x: 5.367041, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -562,8 +562,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 72
+  m_fontSizeBase: 72
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -601,7 +601,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: -60.512596, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -905,7 +905,7 @@ Transform:
   m_GameObject: {fileID: 8528813331068831185}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.71, y: -2.74, z: 0}
+  m_LocalPosition: {x: 5.81, y: -3.56, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1043,7 +1043,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GoalDetector
   requiredTouchCount: 3
-  returnDelay: 3
+  returnDelay: 4
   countText: {fileID: 8099050329432095687}
   clearUIObject: {fileID: 8114185181430892234}
   clearMovement: {fileID: 5978337450014465945}
